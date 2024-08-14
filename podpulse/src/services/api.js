@@ -8,5 +8,5 @@ export const fetchShows = async () => {
  export const fetchShowByid = async (id) => {
     const response = await fetch(`${BASE_URL}/id/${id}`);
     if (!response.ok) throw new Error('Failed to fetch show');
-    return response.json():
+    return response.json();
  }
