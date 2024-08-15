@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchShows } from "../services/api";
 
 const ShowList = () => {
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchShows().then((data) => {
-      setShows(data.sort((a, b) => a.title.localeCompare(b.title)));
-      setLoading(false);
-    })
-    .catch(error =>{
-        console.error('Error fetching shows:', error);
+    fetchShows()
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setShows(data.sort((a, b) => a.title.localeCompare(b.title)));
+        } else {
+          throw new Error("Fetched data is not an array");
+        }
         setLoading(false);
-    });
+      })
+      .catch((error) => {
+        console.error("Error fetching shows:", error);
+        setError(error.message);
+        setLoading(false);
+      });
   }, []);
 
   if (loading) {
@@ -42,34 +49,42 @@ const ShowList = () => {
         </div>
       </div>
     );
-};
+  }
 
-return (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-    {shows.map((show) => (
-      <div
-        key={show.id}
-        className="bg-white shadow-md rounded-lg overflow-hidden"
-      >
-        <img
-          src={show.image}
-          alt={show.title}
-          className="w-full h-48 object-cover"
-        />
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-2 text-oxford-blue">
-            {show.title}
-          </h2>
-          <p className="text-gray-600 mb-2">Seasons: {show.seasons}</p>
-          <p className="text-gray-600 mb-2">
-            Last updated:{new Date(show.updated).toLocaleDateString()}
-          </p>
-          <p className="text-gray-600">Genres: {show.genres.join(",")}</p>
-        </div>
+  if (error) {
+    return (
+      <div className="text-center mt-8 text-red-500">
+        Error fetching shows: {error}
       </div>
-    ))}
-  </div>
-);
-}
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {shows.map((show) => (
+        <div
+          key={show.id}
+          className="bg-white shadow-md rounded-lg overflow-hidden"
+        >
+          <img
+            src={show.image}
+            alt={show.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-4">
+            <h2 className="text-xl font-bold mb-2 text-oxford-blue">
+              {show.title}
+            </h2>
+            <p className="text-gray-600 mb-2">Seasons: {show.seasons}</p>
+            <p className="text-gray-600 mb-2">
+              Last updated: {new Date(show.updated).toLocaleDateString()}
+            </p>
+            <p className="text-gray-600">Genres: {show.genres.join(", ")}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default ShowList;

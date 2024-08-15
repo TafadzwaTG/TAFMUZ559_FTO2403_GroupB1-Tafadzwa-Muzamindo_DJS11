@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ShowList from './components/ShowList';
+import ShowDetail from './components/ShowDetails';
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         </header>
         <main className="container mx-auto py-8">
           <Routes>
-            <Route path="/" element={<ShowList />} />
+          <Route path="/" element={<ShowList />} />
+          <Route path="/show/:id" element={<ShowDetail />} />
           </Routes>
         </main>
       </div>
