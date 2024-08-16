@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
-import { fetchShows } from "../services/api";
+import { fetchShows } from "../services/api"; 
 
 const ShowList = () => {
   const [shows, setShows] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchShows()
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setShows(data.sort((a, b) => a.title.localeCompare(b.title)));
-        } else {
-          throw new Error("Fetched data is not an array");
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetchShows(); 
+        const data = await response.json(); 
+        setShows(data);
+      } catch (error) {
         console.error("Error fetching shows:", error);
         setError(error.message);
-        setLoading(false);
-      });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="text-center mt-8">
         <div className="flex items-center justify-center">

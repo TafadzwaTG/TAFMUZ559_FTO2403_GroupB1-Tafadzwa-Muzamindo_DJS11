@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { fetchShowByid } from "../services/api";
 
+
 const ShowDetail = () => {
   const [show, setShow] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ const ShowDetail = () => {
       })
       .catch((error) => {
         console.error('Error fetching show:', error);
+        setLoading(false);
       });
   }, [id]);
 

@@ -2,11 +2,11 @@ const BASE_URL = 'https://podcast-api.netlify.app'
 
 export const fetchShows = async () => {
     const response = await fetch(`{$BASE_URL}/genre`);
-    if (!response.json);
+    const data= await response.json();
+    return data;
 
 };
  export const fetchShowByid = async (id) => {
     const response = await fetch(`${BASE_URL}/id/${id}`);
-    if (!response.ok) throw new Error('Failed to fetch show');
-    return response.json();
- }
+    return response;
+ };
