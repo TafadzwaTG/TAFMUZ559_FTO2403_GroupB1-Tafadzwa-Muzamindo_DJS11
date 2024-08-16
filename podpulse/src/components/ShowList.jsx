@@ -10,8 +10,8 @@ const ShowList = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetchShows(); 
-        const data = await response.json(); 
+        const data = await fetchShows(); 
+        
         setShows(data);
       } catch (error) {
         console.error("Error fetching shows:", error);
