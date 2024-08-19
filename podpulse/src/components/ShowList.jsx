@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchShows } from "../services/api"; 
+import { fetchShows } from "../services/api";
 
 const ShowList = () => {
   const [shows, setShows] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(10); 
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchShows(); 
+        const data = await fetchShows();
         setShows(data);
       } catch (error) {
         console.error("Error fetching shows:", error);
@@ -23,6 +24,10 @@ const ShowList = () => {
 
     fetchData();
   }, []);
+
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 10);
+  };
 
   if (isLoading) {
     return (
@@ -61,24 +66,44 @@ const ShowList = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
-      {shows.map((show) => (
-        <Link to={`/show/${show.id}`} key={show.id}>
-          <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <img
-              src={show.image}
-              alt={show.title}
-              className="w-full h-32 object-cover"  // Adjusted height
-            />
-            <div className="p-2"> {/* Reduced padding */}
-              <h2 className="text-sm font-bold mb-1 text-oxford-blue">{show.title}</h2>
-              <p className="text-gray-600 mb-1 text-xs">Seasons: {show.seasons}</p>
-              <p className="text-gray-600 mb-1 text-xs">Last updated: {new Date(show.updated).toLocaleDateString()}</p>
-              <p className="text-gray-600 text-xs">Genres: {show.genres.join(", ")}</p>
+    <div className="p-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {shows.slice(0, visibleCount).map((show) => (
+          <Link to={`/show/${show.id}`} key={show.id}>
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <img
+                src={show.image}
+                alt={show.title}
+                className="w-full h-32 object-cover"
+              />
+              <div className="p-2">
+                <h2 className="text-sm font-bold mb-1 text-oxford-blue">
+                  {show.title}
+                </h2>
+                <p className="text-gray-600 mb-1 text-xs">
+                  Seasons: {show.seasons}
+                </p>
+                <p className="text-gray-600 mb-1 text-xs">
+                  Last updated: {new Date(show.updated).toLocaleDateString()}
+                </p>
+                <p className="text-gray-600 text-xs">
+                  Genres: {show.genres.join(", ")}
+                </p>
+              </div>
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
+      </div>
+      {visibleCount < shows.length && (
+        <div className="text-center mt-8">
+          <button
+            onClick={handleShowMore}
+            className="bg-oxford-blue text-white px-4 py-2 rounded"
+          >
+            Show More
+          </button>
+        </div>
+      )}
     </div>
   );
 };

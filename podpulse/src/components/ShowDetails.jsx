@@ -1,4 +1,4 @@
-import{ useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchShowById } from '../services/api.js';
 import SeasonView from './SeasonView.jsx';
@@ -10,16 +10,21 @@ const ShowDetail = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchShowById(id)
-      .then((data) => {
+    const fetchShow = async () => {
+      try {
+        const data = await fetchShowById(id);
         setShow(data);
-        setSelectedSeason(data.seasons[0]);
-        setLoading(false);
-      })
-      .catch((error) => {
+        if (data.seasons && data.seasons.length > 0) {
+          setSelectedSeason(data.seasons[0]);
+        }
+      } catch (error) {
         console.error('Error fetching show:', error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchShow();
   }, [id]);
 
   const handleSeasonSelect = (season) => {
@@ -41,19 +46,23 @@ const ShowDetail = () => {
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2 text-oxford-blue">Seasons</h2>
         <div className="flex space-x-2">
-          {show.seasons.map((season) => (
-            <button
-              key={season.season}
-              onClick={() => handleSeasonSelect(season)}
-              className={`px-4 py-2 rounded ${
-                selectedSeason === season
-                  ? "bg-orange-500 text-white"
-                  : "bg-gray-200 text-oxford-blue"
-              }`}
-            >
-              Season {season.season}
-            </button>
-          ))}
+          {show.seasons && show.seasons.length > 0 ? (
+            show.seasons.map((season) => (
+              <button
+                key={season.season}
+                onClick={() => handleSeasonSelect(season)}
+                className={`px-4 py-2 rounded ${
+                  selectedSeason && selectedSeason.season === season.season
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-200 text-oxford-blue'
+                }`}
+              >
+                Season {season.season}
+              </button>
+            ))
+          ) : (
+            <p>No seasons available</p>
+          )}
         </div>
       </div>
       {selectedSeason && <SeasonView season={selectedSeason} onSelectEpisode={(episode) => console.log(episode)} />}
