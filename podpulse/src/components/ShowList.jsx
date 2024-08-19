@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchShows } from "../services/api";
 
-const ShowList = () => {
+const ShowList = ({ setCurrentAudio }) => {
   const [shows, setShows] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,7 +67,7 @@ const ShowList = () => {
 
   return (
     <div className="p-4">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {shows.slice(0, visibleCount).map((show) => (
           <Link to={`/show/${show.id}`} key={show.id}>
             <div className="bg-white shadow-md rounded-lg overflow-hidden">

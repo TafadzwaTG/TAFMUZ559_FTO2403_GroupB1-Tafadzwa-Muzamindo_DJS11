@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchShowById } from '../services/api.js';
 import SeasonView from './SeasonView.jsx';
 
-const ShowDetail = () => {
+const ShowDetail = ({ setCurrentAudio }) => {
   const [show, setShow] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedSeason, setSelectedSeason] = useState(null);
@@ -41,11 +41,11 @@ const ShowDetail = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 text-oxford-blue">{show.title}</h1>
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-oxford-blue">{show.title}</h1>
       <p className="mb-4 text-gray-700">{show.description}</p>
       <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2 text-oxford-blue">Seasons</h2>
-        <div className="flex space-x-2">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-2 text-oxford-blue">Seasons</h2>
+        <div className="flex flex-wrap gap-2">
           {show.seasons && show.seasons.length > 0 ? (
             show.seasons.map((season) => (
               <button
