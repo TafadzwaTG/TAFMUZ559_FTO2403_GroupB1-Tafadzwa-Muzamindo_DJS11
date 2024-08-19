@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        'oxford-blue': '#002147'
+        'oxford-blue': '#002147',
+        'orange-500': '#F97316',
       },
     },
   },
