@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchShows } from "../services/api"; 
 
 const ShowList = () => {
@@ -11,7 +12,6 @@ const ShowList = () => {
       setIsLoading(true);
       try {
         const data = await fetchShows(); 
-        
         setShows(data);
       } catch (error) {
         console.error("Error fetching shows:", error);
@@ -61,28 +61,23 @@ const ShowList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
       {shows.map((show) => (
-        <div
-          key={show.id}
-          className="bg-white shadow-md rounded-lg overflow-hidden"
-        >
-          <img
-            src={show.image}
-            alt={show.title}
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-4">
-            <h2 className="text-xl font-bold mb-2 text-oxford-blue">
-              {show.title}
-            </h2>
-            <p className="text-gray-600 mb-2">Seasons: {show.seasons}</p>
-            <p className="text-gray-600 mb-2">
-              Last updated: {new Date(show.updated).toLocaleDateString()}
-            </p>
-            <p className="text-gray-600">Genres: {show.genres.join(", ")}</p>
+        <Link to={`/show/${show.id}`} key={show.id}>
+          <div className="bg-white shadow-md rounded-lg overflow-hidden">
+            <img
+              src={show.image}
+              alt={show.title}
+              className="w-full h-32 object-cover"  // Adjusted height
+            />
+            <div className="p-2"> {/* Reduced padding */}
+              <h2 className="text-sm font-bold mb-1 text-oxford-blue">{show.title}</h2>
+              <p className="text-gray-600 mb-1 text-xs">Seasons: {show.seasons}</p>
+              <p className="text-gray-600 mb-1 text-xs">Last updated: {new Date(show.updated).toLocaleDateString()}</p>
+              <p className="text-gray-600 text-xs">Genres: {show.genres.join(", ")}</p>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

@@ -6,7 +6,7 @@ export const fetchShows = async () => {
     return data;
 
 };
- export const fetchShowByid = async (id) => {
+ export const fetchShowById = async (id) => {
     const response = await fetch(`${BASE_URL}/id/${id}`);
     return response;
  };

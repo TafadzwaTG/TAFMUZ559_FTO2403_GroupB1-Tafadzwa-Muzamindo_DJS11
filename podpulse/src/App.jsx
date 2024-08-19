@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ShowList from "./components/ShowList";
-import ShowDetail from "./components/ShowDetails";
-import AudioPlayer from "./components/AudioPlayer";
+import ShowList from "./components/ShowList.jsx";
+import ShowDetails from "./components/ShowDetails.jsx";
+import AudioPlayer from "./components/AudioPlayer.jsx";
 import "./index.css";
 
 function App() {
@@ -14,11 +14,10 @@ function App() {
         <main className="container mx-auto py-8">
           <Routes>
             <Route path="/" element={<ShowList />} />
-            <Route path="/show/:id" element={<ShowDetail />} />
+            <Route path="/show/:id" element={<ShowDetails />} />
           </Routes>
-          
         </main>
-        <AudioPlayer src="path/to/auido.mp3" title="Epsisode Title" />
+        <AudioPlayer src="path/to/audio.mp3" title="Episode Title" />
       </div>
     </Router>
   );

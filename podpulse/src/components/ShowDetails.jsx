@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { fetchShowByid } from "../services/api";
-
+import{ useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchShowById } from '../services/api.js';
+import SeasonView from './SeasonView.jsx';
 
 const ShowDetail = () => {
   const [show, setShow] = useState(null);
@@ -10,7 +10,7 @@ const ShowDetail = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchShowByid(id)
+    fetchShowById(id)
       .then((data) => {
         setShow(data);
         setSelectedSeason(data.seasons[0]);
@@ -22,12 +22,17 @@ const ShowDetail = () => {
       });
   }, [id]);
 
-  if (loading)
+  const handleSeasonSelect = (season) => {
+    setSelectedSeason(season);
+  };
+
+  if (loading) {
     return <div className="text-center mt-8 text-oxford-blue">Loading...</div>;
-  if (!show)
-    return (
-      <div className="text-center mt-8 text-oxford-blue">Show not found</div>
-    );
+  }
+
+  if (!show) {
+    return <div className="text-center mt-8 text-oxford-blue">Show not found</div>;
+  }
 
   return (
     <div className="p-4">
@@ -39,7 +44,7 @@ const ShowDetail = () => {
           {show.seasons.map((season) => (
             <button
               key={season.season}
-              onClick={() => setSelectedSeason(season)}
+              onClick={() => handleSeasonSelect(season)}
               className={`px-4 py-2 rounded ${
                 selectedSeason === season
                   ? "bg-orange-500 text-white"
@@ -51,23 +56,7 @@ const ShowDetail = () => {
           ))}
         </div>
       </div>
-      {selectedSeason && (
-        <div>
-          <h3 className="text-lg font-semibold mb-2 text-oxford-blue">
-            Season {selectedSeason.season} Episodes
-          </h3>
-          <ul className="space-y-2">
-            {selectedSeason.episodes.map((episode) => (
-              <li
-                key={episode.episode}
-                className="bg-white shadow rounded p-2 text-gray-700"
-              >
-                {episode.title}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {selectedSeason && <SeasonView season={selectedSeason} onSelectEpisode={(episode) => console.log(episode)} />}
     </div>
   );
 };
