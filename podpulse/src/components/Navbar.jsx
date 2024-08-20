@@ -1,7 +1,7 @@
-
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { HomeIcon, InformationCircleIcon, StarIcon } from '@heroicons/react/24/solid';
+import { HomeIcon, StarIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -20,8 +20,8 @@ const Navbar = () => {
             <Link to="/" className="hover:text-gray-300">Home</Link>
           </li>
           <li className="flex items-center">
-            <InformationCircleIcon className="w-5 h-5 mr-1" />
-            <Link to="/about" className="hover:text-gray-300">About</Link>
+            <DocumentTextIcon className="w-5 h-5 mr-1" />
+            <Link to="/shows" className="hover:text-gray-300">Show List</Link> 
           </li>
           <li className="relative flex items-center">
             <button 
@@ -46,12 +46,10 @@ const Navbar = () => {
                   <li>
                     <Link to="/favorites" className="block px-4 py-2 hover:bg-gray-100">All Favorites</Link>
                   </li>
-                
                 </ul>
               </div>
             )}
           </li>
-        
         </ul>
       </div>
     </nav>
@@ -59,4 +57,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
