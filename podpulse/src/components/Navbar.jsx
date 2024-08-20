@@ -1,4 +1,4 @@
-// components/Navbar.jsx
+
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { HomeIcon, InformationCircleIcon, StarIcon } from '@heroicons/react/24/solid';

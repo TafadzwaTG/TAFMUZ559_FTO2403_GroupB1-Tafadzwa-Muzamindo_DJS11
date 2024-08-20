@@ -1,4 +1,4 @@
-import  { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const AudioPlayer = ({ src, title }) => {
   const audioRef = useRef(null);
@@ -35,7 +35,15 @@ const AudioPlayer = ({ src, title }) => {
             onClick={togglePlay}
             className="bg-oxford-blue text-white rounded-full w-12 h-12 flex items-center justify-center"
           >
-            {isPlaying ? '⏸' : '▶️'}
+            {isPlaying ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M6 4a1 1 0 011 1v10a1 1 0 11-2 0V5a1 1 0 011-1zM14 4a1 1 0 011 1v10a1 1 0 11-2 0V5a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.5 3.5l11 7-11 7V3.5z" clipRule="evenodd" />
+              </svg>
+            )}
           </button>
           <div className="flex-1">
             <div className="bg-gray-300 rounded-full h-2 overflow-hidden">
