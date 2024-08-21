@@ -1,35 +1,38 @@
 // eslint-disable-next-line no-unused-vars
-import React, { createContext, useState} from "react";
+import React, { createContext, useState, useEffect } from 'react';
+import { fetchFavorites, addFavorite, removeFavorite } from '../services/api';
 
 export const FavoritesContext = createContext();
 
 // eslint-disable-next-line react/prop-types
-export const FavoritesProvider = ({ children}) => {
-    const [favoriteEpisodes, setFavoritesEpisodes] = useState([]);
+export const FavoritesProvider = ({ children }) => {
+    const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
 
-    const  addFavoriteEpisodes = (episode) => {
-        setFavoritesEpisodes((prevFavorites) => {
-            if(!prevFavorites.some((fav) => fav.episode == episode.episode)){
-                return[...prevFavorites, episode].sort((a,b) => 
-                 a.title.localeCompare(b.title)
-            );
-            }
+    useEffect(() => {
+        const loadFavorites = async () => {
+            const favorites = await fetchFavorites();
+            setFavoriteEpisodes(favorites);
+        };
+        loadFavorites();
+    }, []);
 
-            return prevFavorites;
-    });
+    const addFavoriteEpisode = (episode) => {
+        addFavorite(episode);
+        setFavoriteEpisodes((prevFavorites) => [...prevFavorites, episode]);
     };
 
-    const removeFavorite = (episodeId) => {
-        setFavoritesEpisodes((prevFavorites) =>
-        prevFavorites.filter((fav) => fav.episode !== episodeId) 
-    );
+    const removeFavoriteEpisode = (episode) => {
+        removeFavorite(episode);
+        setFavoriteEpisodes((prevFavorites) =>
+            prevFavorites.filter(fav => !(fav.episode === episode.episode && fav.showId === episode.showId))
+        );
     };
-    
+
     return (
         <FavoritesContext.Provider
-        value={{ favoriteEpisodes, addFavoriteEpisodes, removeFavorite}} >
+            value={{ favoriteEpisodes, addFavoriteEpisode, removeFavoriteEpisode }}
+        >
             {children}
         </FavoritesContext.Provider>
     );
-
-}; 
+};
