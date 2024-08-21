@@ -1,4 +1,5 @@
-
+// eslint-disable-next-line no-unused-vars
+import React from "react";
 import Favorites from "../components/Favorites";
 
 const FavoritesPage =() => {
@@ -10,4 +11,4 @@ const FavoritesPage =() => {
     );
 };
 
-export default FavoritesPage;
+export default FavoritesPage

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 
+// eslint-disable-next-line react/prop-types
 const AudioPlayer = ({ src, title }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);

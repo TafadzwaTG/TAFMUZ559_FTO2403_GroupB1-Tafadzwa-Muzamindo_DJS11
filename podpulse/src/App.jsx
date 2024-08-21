@@ -6,6 +6,7 @@ import AudioPlayer from "./components/AudioPlayer";
 import FavoritesPage from "./pages/FavoritesPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
 import "./App.css";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   });
 
   return (
+    <FavoritesProvider>
     <Router>
       <div className="min-h-screen bg-gray-500">
         <Navbar />
@@ -36,6 +38,7 @@ function App() {
         <AudioPlayer src={currentAudio.src} title={currentAudio.title} />
       </div>
     </Router>
+    </FavoritesProvider>
   );
 }
 

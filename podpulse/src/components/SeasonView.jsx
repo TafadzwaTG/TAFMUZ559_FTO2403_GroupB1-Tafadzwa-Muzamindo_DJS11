@@ -1,11 +1,22 @@
-
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { HeartIcon } from "@heroicons/react/24/outline";
+import { FavoritesContext } from "../contexts/FavoritesContext";
 
 const SeasonView = ({ season, onSelectEpisode }) => {
+
   if (!season) {
     return <div className="text-center text-red-500">Season not found</div>;
   }
-  
+
+  const handleFavoriteToggle = (episode) => {
+    if (favoriteEpisodes.some((fav) => fav.episode === episode.episode)) {
+      removeFavoriteEpisode(episode.episode);
+    } else {
+      addFavoriteEpisode(episode);
+    }
+  };
+
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-3xl font-bold text-oxford-blue mb-6">
@@ -19,10 +30,24 @@ const SeasonView = ({ season, onSelectEpisode }) => {
             className="bg-gray-100 p-4 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 transition duration-200 ease-in-out transform hover:-translate-y-1"
             onClick={() => onSelectEpisode(episode)}
           >
-            <span className="font-bold text-oxford-blue">
-              Episode {episode.episode}
-            </span>{" "}
-            {episode.title}
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-oxford-blue">
+                Episode {episode.episode}: {episode.title}
+              </span>
+              <button
+                className={`ml-2 ${
+                  favoriteEpisodes.some((fav) => fav.episode === episode.episode)
+                    ? "text-red-500"
+                    : "text-gray-500"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFavoriteToggle(episode);
+                }}
+              >
+                <HeartIcon className="w-5 h-5" />
+              </button>
+            </div>
           </li>
         ))}
       </ul>
@@ -37,11 +62,11 @@ SeasonView.propTypes = {
     episodes: PropTypes.arrayOf(
       PropTypes.shape({
         episode: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired
+        title: PropTypes.string.isRequired,
       })
-    ).isRequired
+    ).isRequired,
   }),
-  onSelectEpisode: PropTypes.func.isRequired
+  onSelectEpisode: PropTypes.func.isRequired,
 };
 
 export default SeasonView;

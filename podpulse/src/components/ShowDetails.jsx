@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchShowById } from '../services/api.js';
 import SeasonView from './SeasonView.jsx';
 
+// eslint-disable-next-line react/prop-types
 function ShowDetail({ setCurrentAudio }) {
   const { id } = useParams();
   const [show, setShow] = useState(null);
@@ -18,6 +19,7 @@ function ShowDetail({ setCurrentAudio }) {
         if (data.seasons && data.seasons.length > 0) {
           setSelectedSeason(data.seasons[0]); 
         }
+      // eslint-disable-next-line no-unused-vars
       } catch (error) {
         setError('Failed to fetch show details');
       } finally {

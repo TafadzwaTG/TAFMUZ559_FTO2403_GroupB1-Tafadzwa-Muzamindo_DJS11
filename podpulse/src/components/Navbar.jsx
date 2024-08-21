@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { HomeIcon, InformationCircleIcon, StarIcon } from '@heroicons/react/24/solid';
 import { HomeIcon, StarIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
 
 const Navbar = () => {
