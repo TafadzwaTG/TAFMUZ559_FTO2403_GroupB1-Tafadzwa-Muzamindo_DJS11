@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { fetchFavorites, addFavorite, removeFavorite } from '../services/api';
 
 export const FavoritesContext = createContext();
@@ -17,15 +16,17 @@ export const FavoritesProvider = ({ children }) => {
     }, []);
 
     const addFavoriteEpisode = (episode) => {
-        addFavorite(episode);
-        setFavoriteEpisodes((prevFavorites) => [...prevFavorites, episode]);
+        addFavorite(episode).then(() => {
+            setFavoriteEpisodes((prevFavorites) => [...prevFavorites, episode]);
+        });
     };
 
     const removeFavoriteEpisode = (episode) => {
         removeFavorite(episode);
-        setFavoriteEpisodes((prevFavorites) =>
-            prevFavorites.filter(fav => !(fav.episode === episode.episode && fav.showId === episode.showId))
-        );
+            setFavoriteEpisodes((prevFavorites) =>
+                prevFavorites.filter(fav => fav.id !== episode.id )
+            );
+        
     };
 
     return (

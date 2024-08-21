@@ -64,10 +64,10 @@ SeasonView.propTypes = {
             PropTypes.shape({
                 episode: PropTypes.number.isRequired,
                 title: PropTypes.string.isRequired,
-                showId: PropTypes.string.isRequired, // Ensure `showId` is a required prop
+                showId: PropTypes.string.isRequired, 
             })
         ).isRequired,
-    }),
+    }).isRequired,
     onSelectEpisode: PropTypes.func.isRequired,
 };
 

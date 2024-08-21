@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { FavoritesContext } from "../contexts/FavoritesContext"; 
-import { fetchFavorites } from '../services/api'; 
+import { fetchFavorites } from '../services/api';
 
 const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
@@ -72,10 +71,10 @@ const Favorites = () => {
                             >
                                 <div className="flex items-center">
                                     <img
-                                        src={episode.image}
+                                        src={episode.image || '/path/to/placeholder/image.png'}
                                         alt={episode.title}
                                         className="w-16 h-16 object-cover rounded-lg"
-                                        onError={(e) => e.target.src = 'path/to/placeholder/image.png'} // Placeholder image if fails
+                                        onError={(e) => e.target.src = '/path/to/placeholder/image.png'} 
                                     />
                                     <div className="ml-4">
                                         <h2 className="text-lg font-semibold text-oxford-blue">

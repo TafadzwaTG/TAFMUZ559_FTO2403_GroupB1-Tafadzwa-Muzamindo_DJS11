@@ -4,7 +4,7 @@ import ShowList from "./components/ShowList";
 import ShowDetails from "./components/ShowDetails";
 import AudioPlayer from "./components/AudioPlayer";
 import FavoritesPage from "./pages/FavoritesPage";
-import HomePage from "./pages/HomePage";
+import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navbar";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import "./App.css";
