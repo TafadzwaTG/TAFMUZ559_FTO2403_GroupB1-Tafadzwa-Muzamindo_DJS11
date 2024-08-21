@@ -6,7 +6,7 @@ import { FavoritesContext } from '../contexts/FavoritesContext';
 const SeasonView = ({ season, onSelectEpisode }) => {
     const { favoriteEpisodes, addFavoriteEpisode, removeFavoriteEpisode } = useContext(FavoritesContext);
 
-    if (!season) {
+    if (!season || !season.episodes) {
         return <div className="text-center text-red-500">Season not found</div>;
     }
 
@@ -64,7 +64,7 @@ SeasonView.propTypes = {
             PropTypes.shape({
                 episode: PropTypes.number.isRequired,
                 title: PropTypes.string.isRequired,
-                showId: PropTypes.string.isRequired, 
+                showId: PropTypes.number.isRequired, 
             })
         ).isRequired,
     }).isRequired,

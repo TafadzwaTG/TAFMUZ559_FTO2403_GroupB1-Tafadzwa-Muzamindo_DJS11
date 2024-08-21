@@ -5,6 +5,7 @@ import ShowDetails from './components/ShowDetails';
 import AudioPlayer from './components/AudioPlayer';
 import FavoritesPage from './pages/FavoritesPage';
 import HomePage from './components/HomePage/HomePage';
+import GenrePage from './pages/GenrePage'; 
 import Navbar from './components/Navbar';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import './App.css';
@@ -19,7 +20,7 @@ function App() {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const response = await fetch('/api/shows');
+        const response = await fetch('https://podcast-api.netlify.app');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -55,7 +56,14 @@ function App() {
                 path="/show/:id"
                 element={<ShowDetails onPlayAudio={handlePlayAudio} />}
               />
-              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route
+                path="/favorites"
+                element={<FavoritesPage />}
+              />
+              <Route
+                path="/genre/:genreId"
+                element={<GenrePage />}
+              />
             </Routes>
           </main>
           <AudioPlayer src={currentAudio.src} title={currentAudio.title} />

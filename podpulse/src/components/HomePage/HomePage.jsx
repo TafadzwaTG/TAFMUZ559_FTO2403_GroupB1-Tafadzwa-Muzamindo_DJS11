@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { fetchShows, fetchEpisodes, fetchPreviews } from '../../services/api';
+import { fetchShows, fetchEpisodes, fetchPreviews, fetchFavorites, addFavorite, removeFavorite } from '../../services/api';
 import logo from '../../assets/images/pd.jpeg';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorMessage from './ErrorMessage';
 import FeaturedPodcast from './FeaturedPodcast';
 import EpisodeList from './EpisodeList';
+import GenreFilter from '../GenreFilter';
 
 // eslint-disable-next-line react/prop-types
 const HomePage = ({ setCurrentAudio }) => {
@@ -31,6 +32,11 @@ const HomePage = ({ setCurrentAudio }) => {
         const shuffledPreviews = previewData.sort(() => 0.5 - Math.random());
         const latestPreviewEpisodes = shuffledPreviews.slice(0, 5);
         setLatestEpisodes(latestPreviewEpisodes);
+
+        
+        const favoriteEpisodes = await fetchFavorites();
+        console.log('Favorite episodes:', favoriteEpisodes);
+
       } catch (err) {
         setError(err.message || 'Failed to load content');
         console.error(err);
@@ -43,7 +49,11 @@ const HomePage = ({ setCurrentAudio }) => {
   }, []);
 
   const handlePlayEpisode = (episode) => {
-    setCurrentAudio({ src: episode.audioUrl, title: episode.title });
+    if (setCurrentAudio) {
+      setCurrentAudio({ src: episode.audioUrl, title: episode.title });
+    } else {
+      console.error('setCurrentAudio is not defined');
+    }
   };
 
   const getEpisodeAgeDescription = (episode) => {
@@ -78,6 +88,8 @@ const HomePage = ({ setCurrentAudio }) => {
         </p>
       </div>
 
+      <GenreFilter />
+
       {randomPodcast && (
         <FeaturedPodcast
           podcast={randomPodcast}
@@ -88,11 +100,30 @@ const HomePage = ({ setCurrentAudio }) => {
       <EpisodeList
         episodes={latestEpisodesWithDescription}
         title="Latest Episodes"
+        onPlay={handlePlayEpisode}
+        onToggleFavorite={(episode) => {
+          const isFavorite = localStorage.getItem('favoriteEpisodes')?.includes(episode.id);
+          if (isFavorite) {
+            removeFavorite(episode);
+          } else {
+            addFavorite(episode);
+          }
+         
+        }}
       />
 
       <EpisodeList
         episodes={episodes}
         title="Episodes from Selected Podcast"
+        onPlay={handlePlayEpisode}
+        onToggleFavorite={(episode) => {
+          const isFavorite = localStorage.getItem('favoriteEpisodes')?.includes(episode.id);
+          if (isFavorite) {
+            removeFavorite(episode);
+          } else {
+            addFavorite(episode);
+          }
+        }}
       />
     </div>
   );
