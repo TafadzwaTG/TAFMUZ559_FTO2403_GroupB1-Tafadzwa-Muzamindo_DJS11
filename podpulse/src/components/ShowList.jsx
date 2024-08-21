@@ -6,6 +6,7 @@ const ShowList = () => {
     const [shows, setShows] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [sortOrder, setSortOrder] = useState('asc'); 
 
     useEffect(() => {
         const fetchShowList = async () => {
@@ -22,6 +23,20 @@ const ShowList = () => {
         };
         fetchShowList();
     }, []);
+
+   
+    const handleSortChange = (e) => {
+        setSortOrder(e.target.value);
+    };
+
+    
+    const sortedShows = [...shows].sort((a, b) => {
+        if (sortOrder === 'asc') {
+            return a.title.localeCompare(b.title);
+        } else {
+            return b.title.localeCompare(a.title);
+        }
+    });
 
     if (isLoading) {
         return (
@@ -58,9 +73,21 @@ const ShowList = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4 text-oxford-blue">Show List</h1>
+            <div className="mb-4">
+                <label htmlFor="sortOrder" className="mr-2 text-gray-700">Sort by:</label>
+                <select
+                    id="sortOrder"
+                    value={sortOrder}
+                    onChange={handleSortChange}
+                    className="bg-gray-200 px-2 py-1 rounded"
+                >
+                    <option value="asc">Alphabetical A-Z</option>
+                    <option value="desc">Alphabetical Z-A</option>
+                </select>
+            </div>
             <ul className="space-y-4">
-                {shows.length > 0 ? (
-                    shows.map((show) => (
+                {sortedShows.length > 0 ? (
+                    sortedShows.map((show) => (
                         <li
                             key={show.id}
                             className="bg-white shadow-md rounded-lg overflow-hidden"
