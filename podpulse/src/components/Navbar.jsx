@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-oxford-blue text-white p-4">
+    <nav className="fixed top-0 left-0 w-full bg-oxford-blue text-white p-4 z-50 shadow-lg">
       <div className="container mx-auto flex items-center justify-between">
         <Link to="/" className="text-2xl font-bold hover:text-orange-500">
           PodPulse

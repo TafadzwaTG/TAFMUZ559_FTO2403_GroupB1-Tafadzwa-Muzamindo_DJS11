@@ -65,7 +65,7 @@ const HomePage = ({ setCurrentAudio }) => {
   if (error) return <ErrorMessage message={error} />;
 
   return (
-    <div className="container mx-auto py-12 px-4 sm:px-6 md:px-8 lg:px-10 bg-gray-100">
+    <div className="container mx-auto py-12 px-4 sm:px-6 md:px-8 lg:px-10 bg-gray-300">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-oxford-blue mb-4">Welcome to PodPulse</h1>
         <img
