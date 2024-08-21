@@ -6,7 +6,7 @@ import { fetchPreviews } from '../../../podpulse/src/services/api';
 import LoadingSpinner from '../components/HomePage/LoadingSpinner';
 import ErrorMessage from '../components/HomePage/ErrorMessage';
 import EpisodeList from '../components/HomePage/EpisodeList';
-import { genreMapping } from '../constants/genreMapping';
+import { genreMapping } from '../constants/GenreMapping';
 
 const GenrePage = () => {
   const { genreId } = useParams();

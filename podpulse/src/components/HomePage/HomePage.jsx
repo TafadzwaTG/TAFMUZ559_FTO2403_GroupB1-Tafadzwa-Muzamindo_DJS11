@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react';
-import { fetchShows, fetchEpisodes, fetchPreviews, fetchFavorites, addFavorite, removeFavorite } from '../../services/api';
-import logo from '../../assets/images/pd.jpeg';
-import LoadingSpinner from './LoadingSpinner';
-import ErrorMessage from './ErrorMessage';
-import FeaturedPodcast from './FeaturedPodcast';
-import EpisodeList from './EpisodeList';
-import GenreFilter from '../GenreFilter';
+import { useState, useEffect } from "react";
+import {
+  fetchShows,
+  fetchEpisodes,
+  fetchPreviews,
+  fetchFavorites,
+  addFavorite,
+  removeFavorite,
+} from "../../services/api";
+import logo from "../../assets/images/pd.jpeg";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
+import FeaturedPodcast from "./FeaturedPodcast";
+import EpisodeList from "./EpisodeList";
+import GenreFilter from "../GenreFilter";
 
-// eslint-disable-next-line react/prop-types
 const HomePage = ({ setCurrentAudio }) => {
   const [episodes, setEpisodes] = useState([]);
   const [randomPodcast, setRandomPodcast] = useState(null);
@@ -20,7 +26,7 @@ const HomePage = ({ setCurrentAudio }) => {
       setIsLoading(true);
       try {
         const shows = await fetchShows();
-        if (shows.length === 0) throw new Error('No podcasts available');
+        if (shows.length === 0) throw new Error("No podcasts available");
         const randomIndex = Math.floor(Math.random() * shows.length);
         const selectedPodcast = shows[randomIndex];
         setRandomPodcast(selectedPodcast);
@@ -33,12 +39,10 @@ const HomePage = ({ setCurrentAudio }) => {
         const latestPreviewEpisodes = shuffledPreviews.slice(0, 5);
         setLatestEpisodes(latestPreviewEpisodes);
 
-        
         const favoriteEpisodes = await fetchFavorites();
-        console.log('Favorite episodes:', favoriteEpisodes);
-
+        console.log("Favorite episodes:", favoriteEpisodes);
       } catch (err) {
-        setError(err.message || 'Failed to load content');
+        setError(err.message || "Failed to load content");
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -52,7 +56,7 @@ const HomePage = ({ setCurrentAudio }) => {
     if (setCurrentAudio) {
       setCurrentAudio({ src: episode.audioUrl, title: episode.title });
     } else {
-      console.error('setCurrentAudio is not defined');
+      console.error("setCurrentAudio is not defined");
     }
   };
 
@@ -60,13 +64,16 @@ const HomePage = ({ setCurrentAudio }) => {
     const now = new Date();
     const episodeDate = new Date(episode.published);
     const diffInDays = Math.floor((now - episodeDate) / (1000 * 60 * 60 * 24));
-    return diffInDays < 7 ? 'New' :
-           diffInDays < 30 ? 'Recent' :
-           diffInDays < 365 ? 'A few months ago' :
-           'Over a year ago';
+    return diffInDays < 7
+      ? "New"
+      : diffInDays < 30
+        ? "Recent"
+        : diffInDays < 365
+          ? "A few months ago"
+          : "Over a year ago";
   };
 
-  const latestEpisodesWithDescription = latestEpisodes.map(episode => ({
+  const latestEpisodesWithDescription = latestEpisodes.map((episode) => ({
     ...episode,
     ageDescription: getEpisodeAgeDescription(episode),
   }));
@@ -77,24 +84,24 @@ const HomePage = ({ setCurrentAudio }) => {
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 md:px-8 lg:px-10 bg-gray-300">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-oxford-blue mb-4">Welcome to PodPulse</h1>
+        <h1 className="text-4xl font-bold text-oxford-blue mb-4">
+          Welcome to PodPulse
+        </h1>
         <img
           src={logo}
           alt="Podcast Logo"
           className="mx-auto mb-6 w-48 h-48 rounded-full shadow-lg bg-gray-200 animate-pulse"
         />
         <p className="text-lg text-gray-700">
-          Discover, enjoy, and master the world of podcasts. Start your adventure now!
+          Discover, enjoy, and master the world of podcasts. Start your
+          adventure now!
         </p>
       </div>
 
       <GenreFilter />
 
       {randomPodcast && (
-        <FeaturedPodcast
-          podcast={randomPodcast}
-          onPlay={handlePlayEpisode}
-        />
+        <FeaturedPodcast podcast={randomPodcast} onPlay={handlePlayEpisode} />
       )}
 
       <EpisodeList
@@ -102,22 +109,9 @@ const HomePage = ({ setCurrentAudio }) => {
         title="Latest Episodes"
         onPlay={handlePlayEpisode}
         onToggleFavorite={(episode) => {
-          const isFavorite = localStorage.getItem('favoriteEpisodes')?.includes(episode.id);
-          if (isFavorite) {
-            removeFavorite(episode);
-          } else {
-            addFavorite(episode);
-          }
-         
-        }}
-      />
-
-      <EpisodeList
-        episodes={episodes}
-        title="Episodes from Selected Podcast"
-        onPlay={handlePlayEpisode}
-        onToggleFavorite={(episode) => {
-          const isFavorite = localStorage.getItem('favoriteEpisodes')?.includes(episode.id);
+          const isFavorite = localStorage
+            .getItem("favoriteEpisodes")
+            ?.includes(episode.id);
           if (isFavorite) {
             removeFavorite(episode);
           } else {

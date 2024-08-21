@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { genreMapping } from "../constants/genreMapping";
+import { genreMapping } from "../constants/GenreMapping";
 
 
 const GenreFilter = () => {
