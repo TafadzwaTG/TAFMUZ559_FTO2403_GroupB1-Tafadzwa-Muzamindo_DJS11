@@ -1,27 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { Link } from "react-router-dom";
-import { fetchFavorites } from '../services/api';
+import { FavoritesContext } from '../contexts/FavoritesContext';
 
 const Favorites = () => {
-    const [favorites, setFavorites] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchFavoriteEpisodes = async () => {
-            setIsLoading(true);
-            try {
-                const data = await fetchFavorites();
-                setFavorites(data);
-            } catch (error) {
-                console.error("Error fetching favorites:", error);
-                setError("Failed to load favorites");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchFavoriteEpisodes();
-    }, []);
+    const { favoriteEpisodes, isLoading, error } = useContext(FavoritesContext);
 
     if (isLoading) {
         return (
@@ -59,8 +41,8 @@ const Favorites = () => {
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4 text-oxford-blue">Favorite Episodes</h1>
             <ul className="space-y-4">
-                {favorites.length > 0 ? (
-                    favorites.map((episode) => (
+                {favoriteEpisodes.length > 0 ? (
+                    favoriteEpisodes.map((episode) => (
                         <li
                             key={episode.id}
                             className="bg-white shadow-md rounded-lg overflow-hidden"

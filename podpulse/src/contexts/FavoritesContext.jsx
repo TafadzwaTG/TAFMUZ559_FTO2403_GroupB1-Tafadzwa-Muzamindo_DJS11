@@ -9,24 +9,34 @@ export const FavoritesProvider = ({ children }) => {
 
     useEffect(() => {
         const loadFavorites = async () => {
-            const favorites = await fetchFavorites();
-            setFavoriteEpisodes(favorites);
+            try {
+                const favorites = await fetchFavorites();
+                setFavoriteEpisodes(favorites);
+            } catch (error) {
+                console.error("Error fetching favorites:", error);
+            }
         };
         loadFavorites();
     }, []);
 
-    const addFavoriteEpisode = (episode) => {
-        addFavorite(episode).then(() => {
+    const addFavoriteEpisode = async (episode) => {
+        try {
+            await addFavorite(episode);
             setFavoriteEpisodes((prevFavorites) => [...prevFavorites, episode]);
-        });
+        } catch (error) {
+            console.error("Error adding favorite:", error);
+        }
     };
 
-    const removeFavoriteEpisode = (episode) => {
-        removeFavorite(episode);
+    const removeFavoriteEpisode = async (episode) => {
+        try {
+            await removeFavorite(episode);
             setFavoriteEpisodes((prevFavorites) =>
-                prevFavorites.filter(fav => fav.id !== episode.id )
+                prevFavorites.filter(fav => fav.id !== episode.id)
             );
-        
+        } catch (error) {
+            console.error("Error removing favorite:", error);
+        }
     };
 
     return (
