@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchShows } from '../services/api'; 
+import { fetchPreviews } from '../services/api'; 
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
@@ -12,8 +12,8 @@ const ShowList = () => {
         const fetchShowList = async () => {
             setIsLoading(true);
             try {
-                const data = await fetchShows();
-                setShows(data);
+                const data = await fetchPreviews(); 
+                setShows(data); 
             } catch (error) {
                 console.error("Error fetching shows:", error);
                 setError("Failed to load shows");
@@ -24,12 +24,10 @@ const ShowList = () => {
         fetchShowList();
     }, []);
 
-   
     const handleSortChange = (e) => {
         setSortOrder(e.target.value);
     };
 
-    
     const sortedShows = [...shows].sort((a, b) => {
         if (sortOrder === 'asc') {
             return a.title.localeCompare(b.title);

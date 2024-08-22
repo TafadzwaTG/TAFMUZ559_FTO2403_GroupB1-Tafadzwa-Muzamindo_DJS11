@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchPreviews } from '../../../podpulse/src/services/api';
@@ -69,4 +67,4 @@ const GenrePage = () => {
   );
 };
 
-export default GenrePage;
+export default GenrePage
