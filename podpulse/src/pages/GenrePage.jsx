@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchPreviews } from '../../../podpulse/src/services/api';
+import { fetchPreviews } from '../services/api';
 import LoadingSpinner from '../components/HomePage/LoadingSpinner';
 import ErrorMessage from '../components/HomePage/ErrorMessage';
 import EpisodeList from '../components/HomePage/EpisodeList';
@@ -17,24 +17,13 @@ const GenrePage = () => {
       setIsLoading(true);
       try {
         const previews = await fetchPreviews();
-
-       
-        console.log('Fetched previews:', previews);
-
-        
         const filteredEpisodes = previews
           .filter(preview => preview.genreIds && preview.genreIds.includes(Number(genreId)))
           .map(preview => preview.episodes)
           .flat();
-
-       
-        console.log('Filtered episodes:', filteredEpisodes);
-
         setEpisodes(filteredEpisodes);
-
       } catch (err) {
         setError(err.message || 'Failed to load genre content');
-        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -57,7 +46,6 @@ const GenrePage = () => {
         <EpisodeList
           episodes={episodes}
           title={`Episodes in ${genreMapping[genreId] || 'Genre'}`}
-          // eslint-disable-next-line no-unused-vars
           onPlay={(episode) => {
            
           }}
@@ -67,4 +55,4 @@ const GenrePage = () => {
   );
 };
 
-export default GenrePage
+export default GenrePage;

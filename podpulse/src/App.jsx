@@ -8,6 +8,7 @@ import HomePage from './components/HomePage/HomePage';
 import GenrePage from './pages/GenrePage'; 
 import Navbar from './components/Navbar';
 import { FavoritesProvider } from './contexts/FavoritesContext';
+import { fetchShows } from './services/api';
 import './App.css';
 
 function App() {
@@ -18,19 +19,11 @@ function App() {
   const [shows, setShows] = useState([]);
 
   useEffect(() => {
-    const fetchShows = async () => {
-      try {
-        const response = await fetch('https://podcast-api.netlify.app');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setShows(data);
-      } catch (error) {
-        console.error('Error fetching shows:', error);
-      }
+    const loadShows = async () => {
+      const data = await fetchShows();
+      setShows(data);
     };
-    fetchShows();
+    loadShows();
   }, []);
 
   const handlePlayAudio = (audioData) => {
@@ -72,6 +65,5 @@ function App() {
     </FavoritesProvider>
   );
 }
-
 
 export default App;

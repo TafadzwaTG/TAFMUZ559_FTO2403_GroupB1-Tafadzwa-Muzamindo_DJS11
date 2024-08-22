@@ -2,35 +2,33 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { genreMapping } from "../constants/GenreMapping";
 
-
 const GenreFilter = () => {
     const navigate = useNavigate();
 
     const handleChange = (event) => {
         const genreId = event.target.value;
-        if(genreId) {
+        if (genreId) {
             navigate(`/genre/${genreId}`);
         }
     };
 
-    return(
+    return (
         <div className="mb-4">
             <label htmlFor="genre-select" className="block text-lg font-semibold text-oxford-blue mb-2">
                 Select Genre:
             </label>
-
-        <select
-         id="genre-select"
-        onChange={handleChange}
-        className="p-2 border border-gray-300" >
-            <option value="">--Select a Genre--</option>
-            {Object.entries(genreMapping).map(([id, title]) =>(
-                <option key={id} value={id}>
-                {title}
-                </option>
-            ))}
-
-        </select>
+            <select
+                id="genre-select"
+                onChange={handleChange}
+                className="p-2 border border-gray-300"
+            >
+                <option value="">--Select a Genre--</option>
+                {Object.entries(genreMapping).map(([id, title]) => (
+                    <option key={id} value={id}>
+                        {title}
+                    </option>
+                ))}
+            </select>
         </div>
     );
 };
