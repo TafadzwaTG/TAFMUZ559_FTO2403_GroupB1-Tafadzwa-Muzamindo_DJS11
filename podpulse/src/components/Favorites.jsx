@@ -47,14 +47,9 @@ const Favorites = () => {
     setSortOrder(e.target.value);
   };
 
-  const groupedEpisodes = favoriteEpisodes.reduce((acc, episode) => {
-    const key = `${episode.showId}-${episode.season}`;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(episode);
-    return acc;
-  }, {});
+  const handleRemove = (episodeId) => {
+    removeFavoriteEpisode(episodeId);
+  };
 
   return (
     <div className="p-4">
@@ -68,59 +63,45 @@ const Favorites = () => {
           <option value="desc">Z-A</option>
         </select>
       </div>
-      {Object.keys(groupedEpisodes).length ? (
-        Object.entries(groupedEpisodes).map(([key, episodes]) => (
-          <div key={key} className="mb-8">
-            <h2 className="text-xl font-bold text-oxford-blue mb-4">
-              Show ID: {episodes[0].showId} - Season: {episodes[0].season}
-            </h2>
-            <ul className="space-y-4">
-              {episodes.map((episode) => (
-                <li
-                  key={episode.id}
-                  className="bg-white shadow-md rounded-lg overflow-hidden"
-                >
-                  <Link
-                    to={`/show/${episode.showId}/season/${episode.season}/episode/${episode.id}`}
-                    className="block p-4 hover:bg-gray-100"
+      {favoriteEpisodes.length ? (
+        <ul className="space-y-4">
+          {favoriteEpisodes.map((episode) => (
+            <li
+              key={episode.id}
+              className="bg-white shadow-md rounded-lg overflow-hidden"
+            >
+              <Link
+                to={`/show/${episode.showId}/season/${episode.season}/episode/${episode.id}`}
+                className="block p-4 hover:bg-gray-100"
+              >
+                <div className="flex items-center">
+                  <img
+                    src={episode.image || "/path/to/placeholder/image.png"}
+                    alt={episode.title}
+                    className="w-16 h-16 object-cover rounded-lg"
+                    onError={(e) =>
+                      (e.target.src = "/path/to/placeholder/image.png")
+                    }
+                  />
+                  <div className="ml-4 flex-1">
+                    <h2 className="text-lg font-semibold text-oxford-blue">
+                      {episode.title}
+                    </h2>
+                    <p className="text-gray-600">Show ID: {episode.showId}</p>
+                    <p className="text-gray-600">Season: {episode.season}</p>
+                    <p className="text-gray-600">Episode: {episode.id}</p>
+                  </div>
+                  <button
+                    onClick={() => handleRemove(episode.id)}
+                    className="text-red-500 hover:text-red-700 ml-4"
                   >
-                    <div className="flex items-center">
-                      <img
-                        src={episode.image || "/path/to/placeholder/image.png"}
-                        alt={episode.title}
-                        className="w-16 h-16 object-cover rounded-lg"
-                        onError={(e) =>
-                          (e.target.src = "/path/to/placeholder/image.png")
-                        }
-                      />
-                      <div className="ml-4 flex-1">
-                        <h2 className="text-lg font-semibold text-oxford-blue">
-                          {episode.title}
-                        </h2>
-                        <p className="text-gray-600">
-                          Show ID: {episode.showId}
-                        </p>
-                        <p className="text-gray-600">
-                          Season: {episode.season}
-                        </p>
-                        <p className="text-gray-600">Episode: {episode.id}</p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          console.log("Removing episode ID:", episode.id);
-                          removeFavoriteEpisode(episode);
-                        }}
-                        className="text-red-500 hover:text-red-700 ml-4"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
+                    Remove
+                  </button>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       ) : (
         <p className="text-center text-gray-600">No favorites available</p>
       )}

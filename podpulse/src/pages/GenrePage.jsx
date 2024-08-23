@@ -16,11 +16,22 @@ const GenrePage = () => {
     const loadGenreContent = async () => {
       setIsLoading(true);
       try {
+      
         const previews = await fetchPreviews();
+        console.log("Fetched Previews:", previews); 
+
+       
         const filteredEpisodes = previews
-          .filter(preview => preview.genreIds && preview.genreIds.includes(Number(genreId)))
-          .map(preview => preview.episodes)
+          .filter(preview => {
+            console.log("Preview Genres:", preview.genres); 
+            return preview.genres && preview.genres.includes(Number(genreId));
+          })
+          .map(preview => {
+            console.log("Filtered Preview Episodes:", preview.episodes); 
+            return preview.episodes;
+          })
           .flat();
+
         setEpisodes(filteredEpisodes);
       } catch (err) {
         setError(err.message || 'Failed to load genre content');
@@ -47,7 +58,7 @@ const GenrePage = () => {
           episodes={episodes}
           title={`Episodes in ${genreMapping[genreId] || 'Genre'}`}
           onPlay={(episode) => {
-           
+            console.log("Playing Episode:", episode); 
           }}
         />
       )}

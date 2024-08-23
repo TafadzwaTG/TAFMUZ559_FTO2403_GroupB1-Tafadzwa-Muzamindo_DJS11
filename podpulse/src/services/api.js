@@ -62,7 +62,7 @@ export const fetchFavorites = async () => {
 export const addFavorite = (episode) => {
   try {
     const favorites = JSON.parse(localStorage.getItem('favoriteEpisodes')) || [];
-    if (!favorites.some(fav => fav.id === episode.id)) { 
+    if (!favorites.some(fav => fav.episode === episode.id)) { 
       favorites.push(episode);
       localStorage.setItem('favoriteEpisodes', JSON.stringify(favorites));
     }
