@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { HomeIcon, StarIcon, DocumentTextIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+import { HomeIcon, StarIcon, DocumentTextIcon, ChevronDownIcon, CalendarIcon } from '@heroicons/react/24/solid';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -32,6 +32,7 @@ const Navbar = () => {
         <ul className="flex items-center space-x-6">
           <NavItem to="/" icon={<HomeIcon className="w-5 h-5 mr-2" />} text="Home" />
           <NavItem to="/shows" icon={<DocumentTextIcon className="w-5 h-5 mr-2" />} text="Show List" />
+          <NavItem to="/season-view" icon={<CalendarIcon className="w-5 h-5 mr-2" />} text="Season View" />
           <li className="relative" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}

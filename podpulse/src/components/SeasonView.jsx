@@ -11,8 +11,8 @@ const SeasonView = ({ season, onSelectEpisode }) => {
     }
 
     const handleFavoriteToggle = (episode) => {
-        console.log(episode)
-        if (favoriteEpisodes.some((fav) => fav.episode === episode.episode )) {
+        console.log(episode);
+        if (favoriteEpisodes.some((fav) => fav.episode === episode.episode)) {
             removeFavoriteEpisode(episode.episode);
         } else {
             addFavoriteEpisode(episode);
@@ -65,7 +65,7 @@ SeasonView.propTypes = {
             PropTypes.shape({
                 episode: PropTypes.number.isRequired,
                 title: PropTypes.string.isRequired,
-                showId: PropTypes.number, 
+                showId: PropTypes.number,
             })
         ).isRequired,
     }).isRequired,
