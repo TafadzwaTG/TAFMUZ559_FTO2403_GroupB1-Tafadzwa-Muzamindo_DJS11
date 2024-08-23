@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FavoritesContext } from "../contexts/FavoritesContext";
 
 const Favorites = () => {
+  // Get context values related to favorites from FavoritesContext
   const {
     favoriteEpisodes,
     isLoading,
@@ -11,6 +12,7 @@ const Favorites = () => {
     removeFavoriteEpisode,
   } = useContext(FavoritesContext);
 
+  // Show loading spinner while data is loading
   if (isLoading) {
     return (
       <div className="text-center mt-8">
@@ -39,14 +41,17 @@ const Favorites = () => {
     );
   }
 
+  // Show error message if there was an error loading the data
   if (error) {
     return <div className="text-center mt-8 text-red-500">{error}</div>;
   }
 
+  // Function to handle sorting order change
   const handleSortChange = (e) => {
     setSortOrder(e.target.value);
   };
 
+  // Function to handle removing an episode from favorites
   const handleRemove = (episodeId) => {
     removeFavoriteEpisode(episodeId);
   };
@@ -63,6 +68,7 @@ const Favorites = () => {
           <option value="desc">Z-A</option>
         </select>
       </div>
+      {/* Show list of favorite episodes if there are any */}
       {favoriteEpisodes.length ? (
         <ul className="space-y-4">
           {favoriteEpisodes.map((episode) => (

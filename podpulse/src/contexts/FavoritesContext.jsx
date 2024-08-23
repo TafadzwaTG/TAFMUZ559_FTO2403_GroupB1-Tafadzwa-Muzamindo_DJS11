@@ -1,15 +1,19 @@
 import { createContext, useState, useEffect } from "react";
 import { fetchFavorites, addFavorite, removeFavorite } from "../services/api";
 
+// Create a context for favorites
 export const FavoritesContext = createContext();
 
+// Provider component to manage favorite episodes
 // eslint-disable-next-line react/prop-types
 export const FavoritesProvider = ({ children }) => {
+  // State to hold the list of favorite episodes
   const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
 
   useEffect(() => {
     const loadFavorites = async () => {
       try {
+        // Fetch favorites from the API
         const favorites = await fetchFavorites();
         setFavoriteEpisodes(favorites);
       } catch (error) {
@@ -19,6 +23,7 @@ export const FavoritesProvider = ({ children }) => {
     loadFavorites();
   }, []);
 
+  // Add an episode to favorites
   const addFavoriteEpisode = async (episode) => {
     try {
       await addFavorite(episode);
@@ -28,6 +33,7 @@ export const FavoritesProvider = ({ children }) => {
     }
   };
 
+  // Remove an episode from favorites
   const removeFavoriteEpisode = async (episodeId) => {
     try {
       await removeFavorite(episodeId);

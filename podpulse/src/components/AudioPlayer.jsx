@@ -1,14 +1,19 @@
-import { useRef, useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import { useRef, useState, useEffect } from "react";
 
 const AudioPlayer = ({ src }) => {
+  // Create a reference for the audio element
   const audioRef = useRef(null);
+
+  // State variables for playing status, progress, volume, playback rate, current time, and duration
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [currentTime, setCurrentTime] = useState('00:00');
-  const [duration, setDuration] = useState('00:00');
+  const [currentTime, setCurrentTime] = useState("00:00");
+  const [duration, setDuration] = useState("00:00");
 
+  // Toggle play/pause
   const togglePlay = () => {
     if (isPlaying) {
       audioRef.current.pause();
@@ -18,6 +23,7 @@ const AudioPlayer = ({ src }) => {
     setIsPlaying(!isPlaying);
   };
 
+  // Update the progress and time display as the audio plays
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       const currentTimeInSeconds = audioRef.current.currentTime;
@@ -28,6 +34,7 @@ const AudioPlayer = ({ src }) => {
     }
   };
 
+  // Seek to a new time in the audio when the user changes the slider
   const handleSeek = (e) => {
     if (audioRef.current) {
       const newTime = (e.target.value / 100) * audioRef.current.duration;
@@ -36,6 +43,7 @@ const AudioPlayer = ({ src }) => {
     }
   };
 
+  // Change the volume of the audio
   const handleVolumeChange = (e) => {
     if (audioRef.current) {
       const newVolume = e.target.value;
@@ -44,6 +52,7 @@ const AudioPlayer = ({ src }) => {
     }
   };
 
+  // Change the playback speed of the audio
   const handlePlaybackRateChange = (e) => {
     if (audioRef.current) {
       const newRate = parseFloat(e.target.value);
@@ -52,23 +61,26 @@ const AudioPlayer = ({ src }) => {
     }
   };
 
+  // Format seconds into minutes and seconds
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
+  // Set up event listeners for time update and audio end
   useEffect(() => {
     const audioElement = audioRef.current;
 
     if (audioElement) {
-      audioElement.addEventListener('timeupdate', handleTimeUpdate);
-      audioElement.addEventListener('ended', () => setIsPlaying(false));
+      audioElement.addEventListener("timeupdate", handleTimeUpdate);
+      audioElement.addEventListener("ended", () => setIsPlaying(false));
 
+      // Clean up event listeners when component is unmounted
       return () => {
         if (audioElement) {
-          audioElement.removeEventListener('timeupdate', handleTimeUpdate);
-          audioElement.removeEventListener('ended', () => setIsPlaying(false));
+          audioElement.removeEventListener("timeupdate", handleTimeUpdate);
+          audioElement.removeEventListener("ended", () => setIsPlaying(false));
         }
       };
     }
@@ -78,10 +90,13 @@ const AudioPlayer = ({ src }) => {
     <div className="fixed bottom-0 left-0 right-0 bg-gray-100 shadow-sm p-4 z-10">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center space-x-4">
+          {/* Play/Pause button */}
           <button
             onClick={togglePlay}
             className={`bg-oxford-blue text-white rounded-full w-12 h-12 flex items-center justify-center transition-colors duration-300 ${
-              isPlaying ? 'hover:bg-oxford-blue-dark' : 'hover:bg-oxford-blue-lighter'
+              isPlaying
+                ? "hover:bg-oxford-blue-dark"
+                : "hover:bg-oxford-blue-lighter"
             }`}
           >
             {isPlaying ? (
@@ -113,6 +128,7 @@ const AudioPlayer = ({ src }) => {
             )}
           </button>
           <div className="flex-1">
+            {/* Progress bar */}
             <div className="bg-gray-300 rounded-full h-2 overflow-hidden">
               <div
                 className="bg-orange-500 h-full transition-width duration-300 ease-in-out"
@@ -127,12 +143,14 @@ const AudioPlayer = ({ src }) => {
               onChange={handleSeek}
               className="w-full mt-2 focus:outline-none"
             />
+            {/* Display current time and duration */}
             <div className="text-gray-600 text-sm flex justify-between">
               <span>{currentTime}</span>
               <span>{duration}</span>
             </div>
           </div>
           <div className="flex items-center space-x-2">
+            {/* Volume control */}
             <input
               type="range"
               min={0}
@@ -142,6 +160,7 @@ const AudioPlayer = ({ src }) => {
               onChange={handleVolumeChange}
               className="w-24"
             />
+            {/* Playback speed control */}
             <select
               value={playbackRate}
               onChange={handlePlaybackRateChange}
@@ -155,6 +174,7 @@ const AudioPlayer = ({ src }) => {
           </div>
         </div>
       </div>
+      {/* Audio element */}
       <audio ref={audioRef} src={src}></audio>
     </div>
   );

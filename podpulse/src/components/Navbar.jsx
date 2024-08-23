@@ -1,53 +1,82 @@
-import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
-import { HomeIcon, StarIcon, DocumentTextIcon, ChevronDownIcon, CalendarIcon } from '@heroicons/react/24/solid';
+/* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
+import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  HomeIcon,
+  StarIcon,
+  DocumentTextIcon,
+  ChevronDownIcon,
+  CalendarIcon,
+} from "@heroicons/react/24/solid";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const toggleDropdown = () => {
+  // Toggle dropdown menu open/close
+  const toggleDropdown = useCallback(() => {
     setIsDropdownOpen((prev) => !prev);
-  };
+  }, []);
 
   useEffect(() => {
+    // Close dropdown when clicking outside
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-oxford-blue text-white p-4 z-50 shadow-lg">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold hover:text-orange-500 transition duration-300">
+        <Link
+          to="/"
+          className="text-2xl font-bold hover:text-orange-500 transition duration-300"
+        >
           PodPulse
         </Link>
         <ul className="flex items-center space-x-6">
-          <NavItem to="/" icon={<HomeIcon className="w-5 h-5 mr-2" />} text="Home" />
-          <NavItem to="/shows" icon={<DocumentTextIcon className="w-5 h-5 mr-2" />} text="Show List" />
-          <NavItem to="/season-view" icon={<CalendarIcon className="w-5 h-5 mr-2" />} text="Season View" />
+          <NavItem
+            to="/"
+            icon={<HomeIcon className="w-5 h-5 mr-2" />}
+            text="Home"
+          />
+          <NavItem
+            to="/shows"
+            icon={<DocumentTextIcon className="w-5 h-5 mr-2" />}
+            text="Show List"
+          />
+          <NavItem
+            to="/season-view"
+            icon={<CalendarIcon className="w-5 h-5 mr-2" />}
+            text="Season View"
+          />
           <li className="relative" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}
               className="flex items-center space-x-2 hover:text-orange-500 transition duration-300 focus:outline-none"
+              aria-expanded={isDropdownOpen}
+              aria-controls="favorites-dropdown"
             >
               <StarIcon className="w-5 h-5 mr-2" />
               <span>Favorites</span>
               <ChevronDownIcon
                 className={`w-4 h-4 transition-transform duration-200 ${
-                  isDropdownOpen ? 'rotate-180' : ''
+                  isDropdownOpen ? "rotate-180" : ""
                 }`}
               />
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white text-oxford-blue rounded-lg shadow-lg z-10">
+              <div
+                id="favorites-dropdown"
+                className="absolute right-0 mt-2 w-48 bg-white text-oxford-blue rounded-lg shadow-lg z-10"
+              >
                 <ul>
                   <li>
                     <Link
