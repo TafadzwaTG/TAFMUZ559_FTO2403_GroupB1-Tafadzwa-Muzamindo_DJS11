@@ -7,16 +7,24 @@ import {
   DocumentTextIcon,
   ChevronDownIcon,
   CalendarIcon,
+  Bars3Icon, 
+  XMarkIcon, 
 } from "@heroicons/react/24/solid";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   // Toggle dropdown menu open/close
   const toggleDropdown = useCallback(() => {
     setIsDropdownOpen((prev) => !prev);
   }, []);
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     // Close dropdown when clicking outside
@@ -41,7 +49,24 @@ const Navbar = () => {
         >
           PodPulse
         </Link>
-        <ul className="flex items-center space-x-6">
+
+        {/* Mobile Menu Button */}
+        <button
+          className="block sm:hidden text-white focus:outline-none"
+        >
+          {isMobileMenuOpen ? (
+            <XMarkIcon className="w-6 h-6" />
+          ) : (
+            <Bars3Icon className="w-6 h-6" />
+          )}
+        </button>
+
+        {/* Menu Items */}
+        <ul
+          className={`${
+            isMobileMenuOpen ? "block" : "hidden"
+          } sm:flex items-center space-x-6 sm:space-x-6 mt-4 sm:mt-0`}
+        >
           <NavItem
             to="/"
             icon={<HomeIcon className="w-5 h-5 mr-2" />}
@@ -97,7 +122,7 @@ const Navbar = () => {
 };
 
 const NavItem = ({ to, icon, text }) => (
-  <li>
+  <li className="py-2 sm:py-0">
     <Link
       to={to}
       className="flex items-center hover:text-orange-500 transition duration-300 px-3 py-2 rounded-lg hover:bg-oxford-blue-700"
