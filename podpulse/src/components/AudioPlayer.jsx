@@ -84,7 +84,7 @@ const AudioPlayer = ({ src }) => {
         }
       };
     }
-  }, []);
+  }, );
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-100 shadow-sm p-4 z-10">

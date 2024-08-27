@@ -53,6 +53,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           className="block sm:hidden text-white focus:outline-none"
+          onClick={toggleMobileMenu}
         >
           {isMobileMenuOpen ? (
             <XMarkIcon className="w-6 h-6" />
